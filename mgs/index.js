@@ -6,6 +6,7 @@ const Recommendation = require('./recommendation')
 const Transaction = require('./transaction')
 const Transactions = require('./transactions')
 const { runServer } = require('./serve')
+const {logger} = require('./logger')
 
 // reading variables from environment file, set them as you 
 // need in .env file in current working directory
@@ -21,6 +22,7 @@ const BUFFERSIZE = process.env.BUFFERSIZE || 500
 
 const checkRPC = _ => {
     if(process.env.RPC == undefined || process.env.RPC == "") {
+        logger.error('RPC field not found in ENV')
         console.error('RPC field not found in ENV')
         process.exit(1)
     }
@@ -61,6 +63,7 @@ const processTransaction = async (_web3, _hash, _blockNumber, idx, _transactions
             _transaction.blockNumber,
             parseInt(_transaction.gasPrice, 10) / 1e9))
 
+        logger.info(`➕ Processed tx ${idx} of block : ${_blockNumber} in ${humanizeDuration(new Date().getTime() - start)}`)
         console.log(`➕ Processed tx ${idx} of block : ${_blockNumber} in ${humanizeDuration(new Date().getTime() - start)}`)
 
     }
@@ -72,7 +75,7 @@ const processTransaction = async (_web3, _hash, _blockNumber, idx, _transactions
 const processBlock = async (_web3, _transactions, _block) => {
 
     console.log(`🔅 Processing Block : ${_block.number}`)
-
+    logger.info(`🔅 Processing Block : ${_block.number}`)
     const start = new Date().getTime()
     const promises = []
 
@@ -85,6 +88,7 @@ const processBlock = async (_web3, _transactions, _block) => {
     await Promise.all(promises)
 
     console.log(`✅ Block : ${_block.number} in ${humanizeDuration(new Date().getTime() - start)}`)
+    logger.info(`✅ Block : ${_block.number} in ${humanizeDuration(new Date().getTime() - start)}`)
 
 }
 
@@ -103,6 +107,7 @@ const fetchBlockAndProcess = async (_web3, _transactions, _rec) => {
         _rec.blockNumber = latestBlock.number
 
         console.log(`❗️ Empty Block : ${latestBlock.number}`)
+        logger.info(`❗️ Empty Block : ${latestBlock.number}`)
         return
     }
 
@@ -136,6 +141,7 @@ const transactions = new Transactions(BUFFERSIZE)
 const recommendation = new Recommendation()
 
 console.log('🔥 Matic Gas Station running ...')
+logger.info('🔥 Matic Gas Station running ...')
 
 setInterval(updateBlockTime, 60000, web3, recommendation)
 
