@@ -80,7 +80,6 @@ const processTransaction = async (
 
   if (_transaction !== null) {
     const gasPrice = parseInt(_transaction.gasPrice, 10) / 1e9;
-    console.log(gasPrice);
     _transactions.add(
       new Transaction(_transaction.blockNumber, gasPrice > 0 ? gasPrice : 1)
     );
