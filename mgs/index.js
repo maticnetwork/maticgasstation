@@ -267,19 +267,19 @@ console.log("🔥 Matic Gas Station running ...");
 
 // setInterval(updateBlockTime, 60000, _web3, v1Rec, v2Rec);
 
-// runV1(web3PoS, transactions, v1Rec)
-//   .then((_) => {})
-//   .catch((e) => {
-//     console.error(e);
-//     process.exit(1);
-//   });
+runV1(web3PoS, transactions, v1Rec)
+  .then((_) => {})
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  });
 
-// runV2(web3PoS, v2Rec)
-//   .then((_) => {})
-//   .catch((e) => {
-//     console.error(e);
-//     process.exit(1);
-//   });
+runV2(web3PoS, v2Rec)
+  .then((_) => {})
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  });
 
 runZkevm(web3zkevm, zkevmTransactions, zkevmRec)
   .then((_) => {})
