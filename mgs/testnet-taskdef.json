@@ -1,0 +1,202 @@
+{
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "inferenceAccelerators": [],
+    "containerDefinitions": [
+        {
+            "dnsSearchDomains": null,
+            "environmentFiles": [],
+            "logConfiguration": {
+                "logDriver": "awsfirelens",
+                "options": {
+                    "Name": "datadog",
+                    "Host": "http-intake.logs.datadoghq.com",
+                    "dd_service": "gasstaion-testnet",
+                    "dd_source": "nodejs",
+                    "TLS": "on",
+                    "provider": "ecs"
+                },
+                "secretOptions": [
+                    {
+                        "name": "apiKey",
+                        "valueFrom": "arn:aws:ssm:us-east-2:042947190491:parameter/gasstation-testnet/DATADOG_APIKEY"
+                    }
+                ]
+            },
+            "entryPoint": null,
+            "portMappings": [
+                {
+                    "hostPort": 7000,
+                    "protocol": "tcp",
+                    "containerPort": 7000
+                }
+            ],
+            "command": null,
+            "linuxParameters": null,
+            "cpu": 0,
+            "environment": [
+                {
+                  "name": "SAFELOW",
+                  "value": "0.25"
+                },
+                {
+                  "name": "FASTEST",
+                  "value": "10"
+                },
+                {
+                  "name": "STANDARD",
+                  "value": "2"
+                },
+                {
+                  "name": "FAST",
+                  "value": "5"
+                },
+                {
+                  "name": "HOST",
+                  "value": "0.0.0.0"
+                },
+                {
+                  "name": "PORT",
+                  "value": "7000"
+                },
+                {
+                    "name": "BUFFERSIZE",
+                    "value": "1500"
+                },
+                {
+                    "name": "v2SAFE",
+                    "value": "2"
+                },
+                {
+                    "name": "v2STANDARD",
+                    "value": "10"
+                },
+                {
+                    "name": "v2FAST",
+                    "value": "25"
+                },
+                {
+                    "name": "HISTORY_BLOCKS",
+                    "value": "15"
+                }
+
+              ],
+            "resourceRequirements": null,
+            "ulimits": null,
+            "dnsServers": null,
+            "mountPoints": null,
+            "workingDirectory": null,
+            "secrets": [
+                {
+                    "valueFrom": "arn:aws:ssm:us-east-2:042947190491:parameter/gasstation-testnet/ZKEVM_RPC",
+                    "name": "ZKEVM_RPC"
+                },
+                {
+                    "valueFrom": "arn:aws:ssm:us-east-2:042947190491:parameter/gasstation-testnet/MUMBAI_RPC",
+                    "name": "MUMBAI_RPC"
+                }
+              ],
+            "dockerSecurityOptions": null,
+            "memory": null,
+            "memoryReservation": null,
+            "volumesFrom": null,
+            "stopTimeout": null,
+            "image": "nginx:latest",
+            "startTimeout": null,
+            "firelensConfiguration": null,
+            "dependsOn": null,
+            "disableNetworking": null,
+            "interactive": null,
+            "healthCheck": null,
+            "essential": true,
+            "links": null,
+            "hostname": null,
+            "extraHosts": null,
+            "pseudoTerminal": null,
+            "user": null,
+            "readonlyRootFilesystem": null,
+            "dockerLabels": null,
+            "systemControls": null,
+            "privileged": null,
+            "name": "gasstation-testnet",
+            "repositoryCredentials": {
+                "credentialsParameter": ""
+            }
+        },
+        {
+            "essential": true,
+            "image": "amazon/aws-for-fluent-bit:stable",
+            "name": "log_router",
+            "firelensConfiguration": {
+                "type": "fluentbit",
+                "options": {
+                    "enable-ecs-log-metadata": "true"
+                }
+            },
+            "environment": null,
+            "secrets": null,
+            "memoryReservation": 50,
+            "resourceRequirements": null,
+            "portMappings": [],
+            "environmentFiles": [],
+            "mountPoints": null,
+            "volumesFrom": null,
+            "hostname": null,
+            "user": null,
+            "workingDirectory": null,
+            "extraHosts": null,
+            "logConfiguration": null,
+            "ulimits": null,
+            "dockerLabels": null,
+            "dependsOn": null,
+            "repositoryCredentials": {
+                "credentialsParameter": ""
+            }
+        }
+    ],
+    "volumes": [],
+    "networkMode": "awsvpc",
+    "memory": "4096",
+    "cpu": "2048",
+    "executionRoleArn": "arn:aws:iam::042947190491:role/gasstation-testnet-TaskRole",
+    "family": "gasstation-testnet-taskdefinition",
+    "taskRoleArn": "arn:aws:iam::042947190491:role/gasstation-testnet-TaskRolee",
+    "runtimePlatform": {
+        "operatingSystemFamily": "LINUX"
+    },
+    "tags":  [
+        {
+            "key": "Role",
+            "value": "backend-application"
+        },
+        {
+            "key": "ParentService",
+            "value": "gasstation-api"
+        },
+        {
+            "key": "Environment",
+            "value": "production"
+        },
+        {
+            "key": "Service",
+            "value": "gasstation-testnet.polygon.technology"
+        },
+        {
+            "key": "Host",
+            "value": "AWS"
+        },
+        {
+            "key": "IAC",
+            "value": "terraform-workspace-aws-prod-applications-us-east-1-apps-gasstation-polygon-technology"
+        },
+        {
+            "key": "Team",
+            "value": "product-apps"
+        },
+        {
+            "key": "Name",
+            "value": "gasstation-testnet-taskdefinition"
+        }
+    ]
+}
